@@ -74,43 +74,29 @@ Done
 Here is a snippet of the data written to the output file <code>old_pipelines.json</code>. Note that the pipelines are sorted in alphabetical order:
 
 ```
-[
-	{
-    	"pipeline_name": "Delta Lake #1 smoke test",
-    	"pipeline_id": "18ef92c2-3c6c-447e-be03-3b5e2ba82534:8030c2e9-1a39-11ec-a5fe-97c8d4369386",
-    	"last_modified": "2023-05-30 21:44:55"
-  	},
-  	{
-    	"pipeline_name": "Dev to GCS",
-    	"pipeline_id": "5578c662-21a3-464f-8952-aa8de742217c:8030c2e9-1a39-11ec-a5fe-97c8d4369386",
-   	 "last_modified": "2023-07-08 10:43:48"
-  	},
-  	{
-    	"pipeline_name": "Dev to Trash",
-    	"pipeline_id": "22589ec3-0730-466b-9265-8002d62c3115:8030c2e9-1a39-11ec-a5fe-97c8d4369386",
-   	 "last_modified": "2023-07-11 23:11:38"
-  	},
-	...
-]
+{"pipeline_name": "CSV Files to MongoDB", "pipeline_id": "7874e2db-ea9e-4bdb-b114-908e98f15c9f:8030c2e9-1a39-11ec-a5fe-97c8d4369386", "last_modified": "2023-10-09 15:52:32"}
+{"pipeline_name": "CSV Files to Oracle", "pipeline_id": "45dbbba5-3b59-4f4a-8294-438ab9b7de8d:8030c2e9-1a39-11ec-a5fe-97c8d4369386", "last_modified": "2023-10-09 15:49:35"}
+{"pipeline_name": "Call Python UDF", "pipeline_id": "1fd1594b-5b95-432c-808a-cc67f8456a38:8030c2e9-1a39-11ec-a5fe-97c8d4369386", "last_modified": "2023-09-08 14:31:43"}
+{"pipeline_name": "City Metrics", "pipeline_id": "94ffbcec-affc-43bd-8323-2fa37fd603a7:8030c2e9-1a39-11ec-a5fe-97c8d4369386", "last_modified": "2023-07-20 17:29:56"}
 ```
 
-## Script #2 - export-old-jobs.py
+## Script #2 - export-old-pipelines.py
 
-Description:   This script exports the Jobs instances listed in the input file. The exports serve as backups in case any Job instances deleted by script #3 need to be restored. Note that Job Template Instances can't be exported, but deleting Job Template Instances (as performed by script #3) does not delete the associated Job Templates.
+Description:   This script exports the pipelines listed in the input file. The exports serve as backups in case any pipelines deleted by script #3 need to be restored. 
 
 Args:
 
-- <code>input_file</code> - A JSON list of Job instances to export (i.e. the output file written by script #1)
+- <code>input_file</code> - A JSON list of pipelines to export (i.e. the output file written by script #1)
 
-- <code>export_dir</code> - The directory to write the exported Jobs instances to. The directory will be created if it does not exist. If the directory does exist, it must be empty
+- <code>export_dir</code> - The directory to write the exported pipelines to. The directory will be created if it does not exist. If the directory does exist, it must be empty
 
-Usage:          <code>$ python3 export-old-jobs.py <input_file> <export_dir></code> 
+Usage:          <code>$ python3 export-old-pipelines.py <input_file> <export_dir></code> 
 
-Usage Example:  <code>$ python3 export-old-jobs.py /Users/mark/old-jobs/old_jobs.json /Users/mark/jobs-export</code>
+Usage Example:  <code>$ python3 export-old-pipelines.py /Users/mark/old-pipelines/old_pipelines.json /Users/mark/pipelines-export</code>
 
 This script does not write a log, so if you want to capture the results of this script in a file, redirect its output like this:
 
-<code>$ python3 export-old-jobs.py /Users/mark/old-jobs/old_jobs.json /Users/mark/jobs-export > /Users/mark/job-exports.log</code> 
+<code>$ python3 export-old-pipelines.py /Users/mark/old-pipelines/old_pipelines.json /Users/mark/pipelines-export > /Users/mark/pipelines-export.log</code> 
 
 Example Run:
 ```
