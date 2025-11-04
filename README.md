@@ -2,13 +2,13 @@
 
 This project provides three utility scripts that use the [IBM StreamSets SDK for Python](https://support-streamsets-com.s3.us-west-2.amazonaws.com/streamsets-docs/platform-sdk/latest/index.html) to clean up old pipelines from [IBM StreamSets](https://www.ibm.com/products/streamsets).  Pipelines are considered old if no version of the pipeline is associated with a Job and the last modification to the pipeline was before a user-specified "last modified date threshold". 
 
-The scripts perform the following actions and are intended to be run in the following order to minimize risk when deleting Jobs:
+The scripts perform the following actions and are intended to be run in the following order to minimize risk when deleting pipelines:
 
 - Script #1 [get-old-pipelines.py](python/get-old-pipelines.py): This script writes a list of pipelines that meet two criteria:  no version of the pipeline is associated with a Job and the last modification to the pipeline was before a user-specified "last modified date threshold".  
 
 - Script #2 [export-old-pipelines.py](python/export-old-pipelines.py): This script exports the current version of each pipeline in the list created by script #1. The exports serve as backups in case any pipelines deleted by script #3 need to be restored.
 
-- Script #3 [delete-old-pipelines.py](python/delete-old-pipelines.py): This script deletes the pipelines in the list created by script #1. The script will write a list of pipelines that were successfully deleted and those that were not. The API credentials used to run this script must have at least read/write permissions on the pipelines in order to delete them. Pipelines that were not deleted due to permission issues will also be listed.  
+- Script #3 [delete-old-pipelines.py](python/delete-old-pipelines.py): This script deletes the pipelines in the list created by script #1. The script will write a list of pipelines that were successfully deleted and those that were not. The API credentials used to run this script must have at least read/write permissions on the pipelines in order to delete them. 
 
 ***
 Note that all three of these scripts could relatively easily be clubbed together into a single script, and one could add a "dry run" feature, but I chose to use three separate scripts so the critical "delete pipeline" logic (in script #3) could more easily be inspected for correctness.  Additionally, this approach allows the user to edit the list of old pipelines created by the first script to control which pipelines will be deleted by the third script.
@@ -17,13 +17,13 @@ Note that all three of these scripts could relatively easily be clubbed together
 
 See the details for running each script below.
 
-## PREREQUISITES
+## Prerequisites
 
 - Python 3.9+
 
 - StreamSets Platform SDK for Python v6.6+. Docs are [here](https://docs.streamsets.com/platform-sdk/latest/welcome/installation.html)
 
- - StreamSets Platform API Credentials for a user with at least read/write permissions for the Jobs to be deleted.
+ - StreamSets Platform API Credentials for a user with at least read/write permissions for the pipelines to be deleted.
 
  - Before running any of the scripts, export the environment variables <code>CRED_ID</code> and <code>CRED_TOKEN</code>
   with StreamSets Platform API Credentials, like this:
@@ -44,9 +44,9 @@ Args:
 
 
 
-Usage:          $ python3 get-old-pipelines.py <last_modification_date_threshold> <output_file>
+Usage:          <code>$ python3 get-old-pipelines.py <last_modification_date_threshold> <output_file></code>
 
-Usage Example:  $ python3 get-old-pipelines.py 2024-06-30 /Users/mark/old-pipelines/old_pipelines.json
+Usage Example:   <code>$ python3 get-old-pipelines.py 2024-06-30 /Users/mark/old-pipelines/old_pipelines.json</code>
 
 Example Run:
 ```
@@ -70,7 +70,6 @@ Found 191 old pipelines not associated with any Jobs.
 ---------------------------------
 Done
 
-Process finished with exit code 0
 
 
 ```
