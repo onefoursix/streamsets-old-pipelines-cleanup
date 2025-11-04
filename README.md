@@ -46,7 +46,7 @@ Args:
 
 Usage:          <code>$ python3 get-old-pipelines.py <last_modification_date_threshold> <output_file></code>
 
-Usage Example:   <code>$ python3 get-old-pipelines.py 2024-06-30 /Users/mark/old-pipelines/old_pipelines.json</code>
+Usage Example:   <code>$ python3 get-old-pipelines.py 2023-10-12 /Users/mark/old-pipelines/old_pipelines.json</code>
 
 Example Run:
 ```

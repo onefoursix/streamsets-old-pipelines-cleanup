@@ -192,7 +192,7 @@ if len(old_pipelines) > 0:
         json.dump(old_pipelines_sorted, f, indent=2)
     print(f'Found {len(old_pipelines)} old pipelines not associated with any Jobs.')
 else:
-    print("No old pipelines not associated with Jobs were found")
+    print("No old pipelines not associated with Jobs were found.")
 
 print("---------------------------------")
 print('Done')
