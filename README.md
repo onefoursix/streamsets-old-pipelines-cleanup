@@ -73,7 +73,7 @@ Done
 
 
 ```
-Here is an snippet of the data written to the output file <code>old_pipelines.json</code>. Note that the pipelines are sorted in alphabetical order:
+Here is a snippet of the data written to the output file <code>old_pipelines.json</code>. Note that the pipelines are sorted in alphabetical order:
 
 ```
 [
