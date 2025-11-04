@@ -70,8 +70,6 @@ Found 191 old pipelines not associated with any Jobs.
 ---------------------------------
 Done
 
-
-
 ```
 Here is a snippet of the data written to the output file <code>old_pipelines.json</code>. Note that the pipelines are sorted in alphabetical order:
 
