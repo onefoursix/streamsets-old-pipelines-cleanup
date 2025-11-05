@@ -13,7 +13,7 @@ The scripts perform the following actions and are intended to be run in the foll
 ***
 Note that all three of these scripts could relatively easily be clubbed together into a single script, and one could add a "dry run" feature, but I chose to use three separate scripts so the critical "delete pipeline" logic (in script #3) could more easily be inspected for correctness.  Additionally, this approach allows the user to edit the list of old pipelines created by the first script to control which pipelines will be deleted by the third script.
 
-And once again, please carefully read the "Important Note" in the details below regarding the handling of pipeline DRAFT versions.  
+And once again, please carefully read the "Important Notes" in the details below regarding the handling of pipeline DRAFT versions.  
 
 ***
 
