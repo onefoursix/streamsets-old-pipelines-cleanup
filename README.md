@@ -90,13 +90,9 @@ Here is a snippet of the data written to the output file <code>old_pipelines.jso
 
 Description:   This script exports the latest non-Draft version of each pipeline listed in the input file. The exports serve as backups in case any pipelines deleted by script #3 need to be restored. 
 
-<hr>
+<hr/>
 
-
-
-#### Important Note:
-
-**TL;DR -- Publish any DRAFT versions you want to export!**
+### Important Note #1:
 
 In order to avoid the chance of exporting any plain-text credentials, this script sets <code>include_plain_text_credentials</code> to <code>False</code> in the <code>sch.export_pipelines</code> command. 
 
@@ -109,10 +105,19 @@ The current version of this script will handle Draft versions of pipelines in th
 
 - If the latest modified version of a pipeline is a <code>DRAFT</code> version higher than <code>V1</code> (i.e at least one version of the pipeline was published), the pipeline will export the version with the most recent "last modified" timestamp, which may not necessarily be the highest version number. For example, if v3.3 was published more recently than v5, v3.3 will be exported.
 
+See the Example Run's output messages below for examples of handling these scenarios.
+
+<hr/>
+
+### Important Note #2:
+
+The script only exports the latest published version of any pipeline (assuming at least one version was published).
+
 This script could be modified to export every version of every pipeline but that struck me as excessive.  Once again, let me know if you want to change the default behavior of this script.
 
-See the output messages below for example of handling these scenarios.
-<hr>
+
+
+<hr/>
 
 #### Args:
 
@@ -131,7 +136,7 @@ This script does not write a log, so if you want to capture the results of this 
 <code>$ python3 export-old-pipelines.py /Users/mark/old-pipelines/old_pipelines.json /Users/mark/pipelines-export > /Users/mark/pipelines-export.log</code> 
 
 #### Example Run
-Here are snippets of an example run. Note the warnings where for a <code>V1-DRAFT</code> pipeline, no version of the pipeline was exported, and in cases where the most recent version is a <code>DRAFT</code> of </code>V2-DRAFT</code> or higher, the most recent published version was exported:
+Here are snippets of an example run. Note the warnings where for a <code>V1-DRAFT</code> pipeline, no version of the pipeline was exported, and in cases where the most recent version is a <code>DRAFT</code> of <code>V2-DRAFT</code> or higher, the most recent published version was exported:
 
 ```
 $ python3 export-old-pipelines.py /Users/mark/old-pipelines/old_pipelines.json /Users/mark/pipelines-export 
@@ -144,35 +149,52 @@ Connecting to Control Hub
 ---------------------------------
 Exporting Pipelines...
 ---------------------------------
+Exporting pipeline 'Excel ETL' version '1' with pipeline ID '39b27983-c1c5-4750-8625-4ce6bdeb5157:8030c2e9-1a39-11ec-a5fe-97c8d4369386'into the file '/Users/mark/pipelines-export/Excel ETL.zip'
+---------------------------------
+Exporting pipeline 'Excel to Snowflake' version '1' with pipeline ID 'a57161b9-916e-410f-9e8f-e6dc400907ea:8030c2e9-1a39-11ec-a5fe-97c8d4369386'into the file '/Users/mark/pipelines-export/Excel to Snowflake.zip'
+---------------------------------
+```
+Here is an example of a pipeline with only a <code>V1-DRAFT</code> version generating a WARNING that it was not exported!
+
+```
+---------------------------------
+
+Exporting pipeline 'Files to Snowflake' version '5' with pipeline ID '64d52992-6d78-4ac4-8591-b71ed4d4f769:8030c2e9-1a39-11ec-a5fe-97c8d4369386'into the file '/Users/mark/pipelines-export/Files to Snowflake.zip'
 Pipeline '146-databricks-on-azure' version '1-DRAFT' with pipeline ID '17008a20-444d-45c8-a8bc-5e7f55a8dade:8030c2e9-1a39-11ec-a5fe-97c8d4369386' is a draft pipeline and can't be exported.
 Looking for the most recent published version of the pipeline...
 No published versions found for this pipeline
 Warning: Pipeline '146-databricks-on-azure' with pipeline ID '17008a20-444d-45c8-a8bc-5e7f55a8dade:8030c2e9-1a39-11ec-a5fe-97c8d4369386' was not exported!
 ---------------------------------
-Pipeline '2 - Union' version '5-DRAFT' with pipeline ID '013aba98-7206-4322-80a3-674f0ed0fefa:8030c2e9-1a39-11ec-a5fe-97c8d4369386' is a draft pipeline and can't be exported.
+
+```
+
+And here is an example of a pipeline with a <code>V5-DRAFT</code> version generating a message that V4 was exported:
+
+
+```
+---------------------------------
+Pipeline 'Aggregations-Per-Input-File (CSV Files)' version '5-DRAFT' with pipeline ID '37d43171-334a-4991-8609-bf538c783c8e:8030c2e9-1a39-11ec-a5fe-97c8d4369386' is a draft pipeline and can't be exported.
 Looking for the most recent published version of the pipeline...
-Exporting pipeline '2 - Union' version '4' with pipeline ID '013aba98-7206-4322-80a3-674f0ed0fefa:8030c2e9-1a39-11ec-a5fe-97c8d4369386'into the file '/Users/mark/pipelines-export/2 - Union.zip'
----------------------------------
-Exporting pipeline 'Excel ETL' version '1' with pipeline ID '39b27983-c1c5-4750-8625-4ce6bdeb5157:8030c2e9-1a39-11ec-a5fe-97c8d4369386'into the file '/Users/mark/pipelines-export/Excel ETL.zip'
----------------------------------
-Exporting pipeline 'Excel to Snowflake' version '1' with pipeline ID 'a57161b9-916e-410f-9e8f-e6dc400907ea:8030c2e9-1a39-11ec-a5fe-97c8d4369386'into the file '/Users/mark/pipelines-export/Excel to Snowflake.zip'
----------------------------------
-Exporting pipeline 'Files to Snowflake' version '5' with pipeline ID '64d52992-6d78-4ac4-8591-b71ed4d4f769:8030c2e9-1a39-11ec-a5fe-97c8d4369386'into the file '/Users/mark/pipelines-export/Files to Snowflake.zip'
+Found version '4' of the pipeline
+Exporting pipeline 'Aggregations-Per-Input-File (CSV Files)' version '4' with pipeline ID '37d43171-334a-4991-8609-bf538c783c8e:8030c2e9-1a39-11ec-a5fe-97c8d4369386'into the file '/Users/mark/pipelines-export/Aggregations-Per-Input-File (CSV Files).zip'
 ---------------------------------
 ```
 
 #### Example Export Files
 Here is my pipelines-export dir after running the script:
 
-<img src="images/exports.png" alt="exports.png" width="400"/>
+<img src="images/exports.png" alt="exports.png" width="400" style="margin-left: 40px;"/>
 
 
 
-A good test to perform at this point is to manually delete one or more of the exported pipelines from Control Hub and to import the corresponding exported file(s) using the Control Hub UI to confirm the exported pipelines are valid, like this:
+A good test to perform at this point is to manually import one or more of the exported pipelines to confirm the exported pipelines are valid, like this. Note the middle screenshot that shows how you can import a pipeline even if a pipeline with the same ID already exists:
 
-<img src="images/import1.png" alt="import1.png" width="700"/>
-<img src="images/import2.png" alt="import2.png" width="700"/>
 
+<img src="images/import_1.png" alt="import_1.png" width="700" style="margin-left: 40px;"/>
+
+<img src="images/import_2.png" alt="import_2.png" width="700" style="margin-left: 40px;"/>
+
+<img src="images/import_3.png" alt="import_3.png" width="700" style="margin-left: 40px;"/>
 
 ## Script #3 - delete-old-jobs.py
 

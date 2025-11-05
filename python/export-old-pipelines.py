@@ -156,6 +156,7 @@ with open(input_file, 'r') as f:
 
                             else:
                                 pipeline = pipelines[0]
+                                print(f"Found version \'{pipeline.version}\' of the pipeline")
                                 got_pipeline = True
 
                     if got_pipeline:
