@@ -129,6 +129,7 @@ with open(input_file, 'r') as f:
                # Export Pipeline
                 else:
                     pipeline = pipelines[0]
+                    got_pipeline = True
 
                     # If the pipeline is a draft version, get the last published version instead
                     if pipeline.draft:
@@ -140,25 +141,35 @@ with open(input_file, 'r') as f:
                         if commits is None or len(commits) == 0:
                             print("No published versions found for this pipeline")
                             print(f"Warning: Pipeline \'{obj["pipeline_name"]}\' with pipeline ID \'{pipeline_id}\' was not exported!")
+                            got_pipeline = False
 
                         else:
                             # Get the most recent published version
                             most_recent_commit = max(commits, key=lambda c: c.commit_time)
                             # Get the most recent commit of the pipeline from Control Hub using its ID
-                            query = 'pipeline_id=="' + pipeline_id + '"'
+                            query = 'pipeline_id=="' + pipeline_id + '" and version=="' +  most_recent_commit.version + '"'
                             pipelines = sch.pipelines.get_all(search=query)
 
-                    # replace '/' with '_' in pipeline name
-                    pipeline_name = pipeline.name.replace("/", "_")
-                    export_file_name = export_dir + '/' + pipeline_name + '.zip'
+                            if pipelines is None or len(pipelines) == 0:
+                                print("Error: Unable to retrieve a published version of this pipeline")
+                                got_pipeline = False
 
-                    print(f"Exporting pipeline \'{pipeline.name}\' version \'{pipeline.version}\' into the file \'{export_file_name}\'")
+                            else:
+                                pipeline = pipelines[0]
+                                got_pipeline = True
 
-                    data = sch.export_pipelines([pipeline])
+                    if got_pipeline:
+                        # replace '/' with '_' in pipeline name
+                        pipeline_name = pipeline.name.replace("/", "_")
+                        export_file_name = export_dir + '/' + pipeline_name + '.zip'
 
-                    # Write a zip file for the Job
-                    with open(export_file_name, 'wb') as file:
-                        file.write(data)
+                        print(f"Exporting pipeline \'{pipeline.name}\' version \'{pipeline.version}\' into the file \'{export_file_name}\'")
+
+                        data = sch.export_pipelines([pipeline])
+
+                        # Write a zip file for the Job
+                        with open(export_file_name, 'wb') as file:
+                            file.write(data)
 
             except Exception as e:
                 print(f"Error exporting pipeline \'{pipeline.name}\': {e}")
