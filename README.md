@@ -6,7 +6,7 @@ The scripts perform the following actions and are intended to be run in the foll
 
 - Script #1 [get-old-pipelines.py](python/get-old-pipelines.py): This script writes a list of pipelines that meet two criteria:  no version of the pipeline is associated with a Job and the last modification to the pipeline was before a user-specified "last modified date threshold".  
 
-- Script #2 [export-old-pipelines.py](python/export-old-pipelines.py): This script exports the most current non-DRAFT version of each pipeline in the list created by script #1. The exports serve as backups in case any pipelines deleted by script #3 need to be restored.  Please carefully read the "Important Note" in the details below regarding the handling of pipeline DRAFT versions.  **TL;DR -- Publish any DRAFT versions you want to export!**
+- Script #2 [export-old-pipelines.py](python/export-old-pipelines.py): This script exports the most current non-DRAFT version of each pipeline in the list created by script #1. The exports serve as backups in case any pipelines deleted by script #3 need to be restored.  Please carefully read the "Important Notes" in the details below regarding the handling of pipeline DRAFT versions.  **TL;DR -- Publish any DRAFT versions you want to export!**
 
 - Script #3 [delete-old-pipelines.py](python/delete-old-pipelines.py): This script deletes the pipelines in the list created by script #1. The script will write a list of pipelines that were successfully deleted and those that were not. The API credentials used to run this script must have at least read/write permissions on the pipelines in order to delete them. 
 
