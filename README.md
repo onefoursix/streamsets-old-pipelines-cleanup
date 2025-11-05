@@ -118,7 +118,7 @@ This script could be modified to export every version of every pipeline but that
 
 ### Important Note #3:
 
-This script sets <code>include_plain_text_credentials</code> to <code>False</code> in the <code>sch.export_pipelines</code>, which means that if you have hard-coded credentials within your pipelines, they will not be exported! 
+This script sets <code>include_plain_text_credentials</code> to <code>False</code> in the <code>sch.export_pipelines</code> command, which means that if you have hard-coded credentials within your pipelines, they will not be exported! 
 
 <hr/>
 
