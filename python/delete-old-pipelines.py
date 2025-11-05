@@ -56,18 +56,18 @@ def validate_input_file_parameter(the_input_file):
 # pipeline is not found or if there is any issue
 def get_pipeline(the_pipeline_info):
     pipeline_id = the_pipeline_info["pipeline_id"]
-    pipeline_name = the_pipeline_info["name"]
+    pipeline_name = the_pipeline_info["pipeline_name"]
 
     try:
-        query = 'id=="' + pipeline_id + '"'
-        pipelines = sch.jobs.get_all(search=query)
+        query = 'pipeline_id=="' + pipeline_id + '"'
+        pipelines = sch.pipelines.get_all(search=query)
         if pipelines is None or len(pipelines) == 0:
-            print(f"Error getting pipeline from Control Hub \'{pipeline_name}\': Pipeline not found")
+            print(f"Error getting pipeline \'{pipeline_name}\': Pipeline not found")
         else:
             pipeline = pipelines[0]
             return pipeline
     except Exception as ex:
-        print(f"Error getting pipeline from Control Hub \'{pipeline_name}\': {ex}")
+        print(f"Error getting pipeline \'{pipeline_name}\': {ex}")
     return None
 
 # Method to delete a pipeline. The deletion attempt might fail due to permission issues
@@ -75,14 +75,14 @@ def get_pipeline(the_pipeline_info):
 def delete_pipeline(pipeline):
     try:
         sch.delete_pipeline(pipeline)
-        print(f- Pipeline was deleted.")
+        print('- Pipeline was deleted.')
     except Exception as ex:
         print(f"Error: Attempt to delete pipeline \'{pipeline_name}\' with ID \'{pipeline_id}\' failed; {ex}")
 
 # Method to handle each line the input file
 def handle_line(the_pipeline_info):
 
-    print(f"Preparing to delete pipeline \'{the_pipeline_info['pipeline_name']}\' with  ID \'{the_pipeline_info['pipeline_id']}\'")
+    print(f"Preparing to delete pipeline \'{the_pipeline_info['pipeline_name']}\' with ID \'{the_pipeline_info['pipeline_id']}\'")
 
     # Get the pipeline
     pipeline = get_pipeline(the_pipeline_info)
