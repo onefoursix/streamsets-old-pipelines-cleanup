@@ -72,7 +72,7 @@ Done
 
 
 ```
-Here is a snippet of the data written to the output file <code>old_pipelines.json</code>. Note that the pipelines are sorted in alphabetical order:
+Here is a snippet of the data written to the output file <code>old_pipelines.json</code> including the pipeline name, id, last modified timestamp, version number and if the pipeline is a Draft version or not. Note that the pipelines are sorted in alphabetical order by name:
 
 ```
 {"pipeline_name": "Convert_JSON_to_CSV", "pipeline_id": "a8e68710-5bec-4e69-aad3-8d11553d52ca:8030c2e9-1a39-11ec-a5fe-97c8d4369386", "last_modified": "2023-10-07 21:15:14", "version": "6", "is_draft": false}
@@ -84,7 +84,25 @@ Here is a snippet of the data written to the output file <code>old_pipelines.jso
 
 ## Script #2 - export-old-pipelines.py
 
-Description:   This script exports the pipelines listed in the input file. The exports serve as backups in case any pipelines deleted by script #3 need to be restored. 
+Description:   This script exports the latest non-Draft version of each pipeline listed in the input file. The exports serve as backups in case any pipelines deleted by script #3 need to be restored. 
+
+<hr>
+
+**Important Note:** In order to avoid the chance of exporting any plain-text credentials, this script sets <code>include_plain_text_credentials</code> to <code>False</code> in the <code>sch.export_pipelines</code> command. 
+
+***This has the side effect of not allowing Draft versions of pipelines to be exported.***
+Please contact me at <code>mark.brooks@ibm.com</code> if you want to change this behavior.  
+
+The current version of this script will handle Draft versions of pipelines in the following manner:
+
+- If the latest modified version of a pipeline is <code>V1-DRAFT</code>, the pipeline will not be exported as there are no published versions!
+
+- If the latest modified version of a pipeline is a <code>DRAFT</code> version higher than <code>V1</code> (i.e at least one version of the pipeline was published), the pipeline will export the version with the most recent "last modified" timestamp, which may not necessarily be the highest version number. For example, if v3.3 was published more recently than v5, v3.3 will be exported.
+
+This script could be modified to export every version of every pipeline but that struck me as excessive.  Once again, let me know if you want to change the default behavior of this script.
+
+See the output messages below for example of handling these scenarios**
+<hr>
 
 Args:
 
