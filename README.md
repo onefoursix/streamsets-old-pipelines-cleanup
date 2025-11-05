@@ -6,7 +6,7 @@ The scripts perform the following actions and are intended to be run in the foll
 
 - Script #1 [get-old-pipelines.py](python/get-old-pipelines.py): This script writes a list of pipelines that meet two criteria:  no version of the pipeline is associated with a Job and the last modification to the pipeline was before a user-specified "last modified date threshold".  
 
-- Script #2 [export-old-pipelines.py](python/export-old-pipelines.py): This script exports the current version of each pipeline in the list created by script #1. The exports serve as backups in case any pipelines deleted by script #3 need to be restored.
+- Script #2 [export-old-pipelines.py](python/export-old-pipelines.py): This script exports the most current non-DRAFT version of each pipeline in the list created by script #1. The exports serve as backups in case any pipelines deleted by script #3 need to be restored.  Please carefully read the "Important Note" in the details below regarding the handling of pipeline DRAFT versions.  **TL;DR -- Publish any DRAFT versions you want to export!**
 
 - Script #3 [delete-old-pipelines.py](python/delete-old-pipelines.py): This script deletes the pipelines in the list created by script #1. The script will write a list of pipelines that were successfully deleted and those that were not. The API credentials used to run this script must have at least read/write permissions on the pipelines in order to delete them. 
 
@@ -36,7 +36,7 @@ See the details for running each script below.
 
 Description:   This script writes a list of old pipelines.   Pipelines are considered old if no version of the pipeline is associated with a Job and the last modification to the pipeline was before a user-specified "last modified date threshold". 
 
-Args:
+#### Args:
 
 - <code>last_modification_date_threshold</code> - A String in the form yyyy-mm-dd that is the threshold date to mark pipelines as needing to be cleaned up if they have not been modified since before that date, and if no version of the pipeline is associated with a Job.
 
@@ -44,13 +44,15 @@ Args:
 
 
 
-Usage:          <code>$ python3 get-old-pipelines.py <last_modification_date_threshold> <output_file></code>
+#### Usage:          
+<code>$ python3 get-old-pipelines.py <last_modification_date_threshold> <output_file></code>
 
-Usage Example:   <code>$ python3 get-old-pipelines.py 2023-10-12 /Users/mark/old-pipelines/old_pipelines.json</code>
+#### Usage Example:   
+<code>$ python3 get-old-pipelines.py 2023-10-12 /Users/mark/old-pipelines/old_pipelines.json</code>
 
-Example Run:
+#### Example Run:
 ```
-$ python3 ./get-old-pipelines.py 2023-10-12 /Users/mark/old-pipelines/old_pipelines.json 
+$ python3get-old-pipelines.py 2023-10-12 /Users/mark/old-pipelines/old_pipelines.json 
 
 ---------------------------------
 Searching for old pipelines not associated with Jobs
@@ -101,42 +103,73 @@ The current version of this script will handle Draft versions of pipelines in th
 
 This script could be modified to export every version of every pipeline but that struck me as excessive.  Once again, let me know if you want to change the default behavior of this script.
 
-See the output messages below for example of handling these scenarios**
+See the output messages below for example of handling these scenarios.
 <hr>
 
-Args:
+#### Args:
 
 - <code>input_file</code> - A JSON list of pipelines to export (i.e. the output file written by script #1)
 
 - <code>export_dir</code> - The directory to write the exported pipelines to. The directory will be created if it does not exist. If the directory does exist, it must be empty
 
-Usage:          <code>$ python3 export-old-pipelines.py <input_file> <export_dir></code> 
+#### Usage:          
+<code>$ python3 export-old-pipelines.py <input_file> <export_dir></code> 
 
-Usage Example:  <code>$ python3 export-old-pipelines.py /Users/mark/old-pipelines/old_pipelines.json /Users/mark/pipelines-export</code>
+#### Usage Example:  
+<code>$ python3 export-old-pipelines.py /Users/mark/old-pipelines/old_pipelines.json /Users/mark/pipelines-export</code>
 
 This script does not write a log, so if you want to capture the results of this script in a file, redirect its output like this:
 
 <code>$ python3 export-old-pipelines.py /Users/mark/old-pipelines/old_pipelines.json /Users/mark/pipelines-export > /Users/mark/pipelines-export.log</code> 
 
-Example Run:
+#### Example Run
+Here are snippets of an example run. Note the warnings where for a <code>V1-DRAFT</code> pipelines, no version of the pipeline was exported, and in cases where the most recent version is a <code>DRAFT</code> like </code>V2-DRAFT</code> or higher, the most recent published version was exported:
+
 ```
-	$ python3 export-old-jobs.py /Users/mark/old-jobs/old_jobs.json /Users/mark/job-exports 
-	---------------------------------
-	input_file: '/Users/mark/old-jobs/old_jobs.json'
-	---------------------------------
-	export_dir: '/Users/mark/job-exports'
-	---------------------------------
-	Connecting to Control Hub
-	---------------------------------
-	Exporting Jobs:
-	---------------------------------
-	Exporting Job 'Weather to MongoDB' into the file '/Users/mark/job-exports/Weather to MongoDB.zip'
-	Exporting Job 'Weather Raw to Refined (1)' into the file '/Users/mark/job-exports/Weather Raw to Refined (1).zip'
-	Exporting Job 'Weather Aggregation' into the file '/Users/mark/job-exports/Weather Aggregation.zip'
-	Exporting Job 'Oracle to Snowflake Bulk Load' into the file '/Users/mark/job-exports/Oracle to Snowflake Bulk Load.zip'
-	Exporting Job 'Oracle CDC to Snowflake' into the file '/Users/mark/job-exports/Oracle CDC to Snowflake.zip'
-	-------------------------------------
-	Done
+$ python3 export-old-pipelines.py /Users/mark/old-pipelines/old_pipelines.json /Users/mark/pipelines-export 
+---------------------------------
+input_file: '/Users/mark/old-pipelines/old_pipelines.json'
+---------------------------------
+export_dir: '/Users/mark/pipelines-export'
+---------------------------------
+Connecting to Control Hub
+---------------------------------
+Exporting Pipelines...
+---------------------------------
+Pipeline '146-databricks-on-azure' version '1-DRAFT' with pipeline ID '17008a20-444d-45c8-a8bc-5e7f55a8dade:8030c2e9-1a39-11ec-a5fe-97c8d4369386' is a draft pipeline and can't be exported.
+Looking for the most recent published version of the pipeline...
+No published versions found for this pipeline
+Warning: Pipeline '146-databricks-on-azure' with pipeline ID '17008a20-444d-45c8-a8bc-5e7f55a8dade:8030c2e9-1a39-11ec-a5fe-97c8d4369386' was not exported!
+---------------------------------
+Pipeline '2 - Union' version '5-DRAFT' with pipeline ID '013aba98-7206-4322-80a3-674f0ed0fefa:8030c2e9-1a39-11ec-a5fe-97c8d4369386' is a draft pipeline and can't be exported.
+Looking for the most recent published version of the pipeline...
+Exporting pipeline '2 - Union' version '4' with pipeline ID '013aba98-7206-4322-80a3-674f0ed0fefa:8030c2e9-1a39-11ec-a5fe-97c8d4369386'into the file '/Users/mark/pipelines-export/2 - Union.zip'
+streamsets-old-pipelines-cleanup/.venv/bin/python /Users/mark/Documents/GitHub/146/streamsets-old-pipelines-cleanup/python/export-old-pipelines.py /Users/mark/old-pipelines/old_pipelines.json /Users/mark/pipelines-export 
+---------------------------------
+input_file: '/Users/mark/old-pipelines/old_pipelines.json'
+---------------------------------
+export_dir: '/Users/mark/pipelines-export'
+---------------------------------
+Connecting to Control Hub
+---------------------------------
+Exporting Pipelines...
+---------------------------------
+Pipeline '146-databricks-on-azure' version '1-DRAFT' with pipeline ID '17008a20-444d-45c8-a8bc-5e7f55a8dade:8030c2e9-1a39-11ec-a5fe-97c8d4369386' is a draft pipeline and can't be exported.
+Looking for the most recent published version of the pipeline...
+No published versions found for this pipeline
+Warning: Pipeline '146-databricks-on-azure' with pipeline ID '17008a20-444d-45c8-a8bc-5e7f55a8dade:8030c2e9-1a39-11ec-a5fe-97c8d4369386' was not exported!
+---------------------------------
+Pipeline '2 - Union' version '5-DRAFT' with pipeline ID '013aba98-7206-4322-80a3-674f0ed0fefa:8030c2e9-1a39-11ec-a5fe-97c8d4369386' is a draft pipeline and can't be exported.
+Looking for the most recent published version of the pipeline...
+Exporting pipeline '2 - Union' version '4' with pipeline ID '013aba98-7206-4322-80a3-674f0ed0fefa:8030c2e9-1a39-11ec-a5fe-97c8d4369386'into the file '/Users/mark/pipelines-export/2 - Union.zip'
+---------------------------------
+Exporting pipeline 'Excel ETL' version '1' with pipeline ID '39b27983-c1c5-4750-8625-4ce6bdeb5157:8030c2e9-1a39-11ec-a5fe-97c8d4369386'into the file '/Users/mark/pipelines-export/Excel ETL.zip'
+---------------------------------
+Exporting pipeline 'Excel to Snowflake' version '1' with pipeline ID 'a57161b9-916e-410f-9e8f-e6dc400907ea:8030c2e9-1a39-11ec-a5fe-97c8d4369386'into the file '/Users/mark/pipelines-export/Excel to Snowflake.zip'
+---------------------------------
+Exporting pipeline 'Files to Snowflake' version '5' with pipeline ID '64d52992-6d78-4ac4-8591-b71ed4d4f769:8030c2e9-1a39-11ec-a5fe-97c8d4369386'into the file '/Users/mark/pipelines-export/Files to Snowflake.zip'
+---------------------------------
+
 
 ```
 
