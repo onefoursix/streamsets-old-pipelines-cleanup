@@ -13,6 +13,8 @@ The scripts perform the following actions and are intended to be run in the foll
 ***
 Note that all three of these scripts could relatively easily be clubbed together into a single script, and one could add a "dry run" feature, but I chose to use three separate scripts so the critical "delete pipeline" logic (in script #3) could more easily be inspected for correctness.  Additionally, this approach allows the user to edit the list of old pipelines created by the first script to control which pipelines will be deleted by the third script.
 
+And once again, please carefully read the "Important Note" in the details below regarding the handling of pipeline DRAFT versions.  
+
 ***
 
 See the details for running each script below.
@@ -90,7 +92,13 @@ Description:   This script exports the latest non-Draft version of each pipeline
 
 <hr>
 
-**Important Note:** In order to avoid the chance of exporting any plain-text credentials, this script sets <code>include_plain_text_credentials</code> to <code>False</code> in the <code>sch.export_pipelines</code> command. 
+
+
+#### Important Note:
+
+**TL;DR -- Publish any DRAFT versions you want to export!**
+
+In order to avoid the chance of exporting any plain-text credentials, this script sets <code>include_plain_text_credentials</code> to <code>False</code> in the <code>sch.export_pipelines</code> command. 
 
 ***This has the side effect of not allowing Draft versions of pipelines to be exported.***
 Please contact me at <code>mark.brooks@ibm.com</code> if you want to change this behavior.  
@@ -123,7 +131,7 @@ This script does not write a log, so if you want to capture the results of this 
 <code>$ python3 export-old-pipelines.py /Users/mark/old-pipelines/old_pipelines.json /Users/mark/pipelines-export > /Users/mark/pipelines-export.log</code> 
 
 #### Example Run
-Here are snippets of an example run. Note the warnings where for a <code>V1-DRAFT</code> pipelines, no version of the pipeline was exported, and in cases where the most recent version is a <code>DRAFT</code> like </code>V2-DRAFT</code> or higher, the most recent published version was exported:
+Here are snippets of an example run. Note the warnings where for a <code>V1-DRAFT</code> pipeline, no version of the pipeline was exported, and in cases where the most recent version is a <code>DRAFT</code> of </code>V2-DRAFT</code> or higher, the most recent published version was exported:
 
 ```
 $ python3 export-old-pipelines.py /Users/mark/old-pipelines/old_pipelines.json /Users/mark/pipelines-export 
@@ -144,7 +152,6 @@ Warning: Pipeline '146-databricks-on-azure' with pipeline ID '17008a20-444d-45c8
 Pipeline '2 - Union' version '5-DRAFT' with pipeline ID '013aba98-7206-4322-80a3-674f0ed0fefa:8030c2e9-1a39-11ec-a5fe-97c8d4369386' is a draft pipeline and can't be exported.
 Looking for the most recent published version of the pipeline...
 Exporting pipeline '2 - Union' version '4' with pipeline ID '013aba98-7206-4322-80a3-674f0ed0fefa:8030c2e9-1a39-11ec-a5fe-97c8d4369386'into the file '/Users/mark/pipelines-export/2 - Union.zip'
-streamsets-old-pipelines-cleanup/.venv/bin/python /Users/mark/Documents/GitHub/146/streamsets-old-pipelines-cleanup/python/export-old-pipelines.py /Users/mark/old-pipelines/old_pipelines.json /Users/mark/pipelines-export 
 ---------------------------------
 input_file: '/Users/mark/old-pipelines/old_pipelines.json'
 ---------------------------------
@@ -169,30 +176,16 @@ Exporting pipeline 'Excel to Snowflake' version '1' with pipeline ID 'a57161b9-9
 ---------------------------------
 Exporting pipeline 'Files to Snowflake' version '5' with pipeline ID '64d52992-6d78-4ac4-8591-b71ed4d4f769:8030c2e9-1a39-11ec-a5fe-97c8d4369386'into the file '/Users/mark/pipelines-export/Files to Snowflake.zip'
 ---------------------------------
-
-
 ```
 
-If you have Job Template Instances in the list of old Jobs, you will see messages like this when you run the script:
-```
-	---------------------------------
-	Skipping export for Job 'Check Database Table Schema - employee' because it is a Job Template Instance
-	--> Job Template ID '97ec0a88-4e19-4855-aece-3a9b13f390d7:8030c2e9-1a39-11ec-a5fe-97c8d4369386'
-	---------------------------------
-```
-Here is a directory listing of the exported Jobs:
+#### Example Export Files
+Here is my pipelines-export dir after running the script:
 
-```
-	$ ls -l ~/job-exports
-	total 888
-	-rw-r--r--@ 1 mark  staff   90414 Jul 23 14:43 Oracle CDC to Snowflake.zip
-	-rw-r--r--@ 1 mark  staff  135891 Jul 23 14:43 Oracle to Snowflake Bulk Load.zip
-	-rw-r--r--@ 1 mark  staff   52758 Jul 23 14:43 Weather Aggregation.zip
-	-rw-r--r--@ 1 mark  staff  105615 Jul 23 14:43 Weather Raw to Refined (1).zip
-	-rw-r--r--@ 1 mark  staff   59928 Jul 23 14:43 Weather to MongoDB.zip
-```
+<img src="images/exports.png" alt="exports.png" width="400"/>
 
-A good test to perform at this point is to manually delete one of those Job instances from Control Hub and to import the corresponding exported file using the Control Hub UI to confirm the exported Job archives are valid, like this:
+
+
+A good test to perform at this point is to manually delete one or more of the exported pipelines from Control Hub and to import the corresponding exported file(s) using the Control Hub UI to confirm the exported pipelines are valid, like this:
 
 <img src="images/import1.png" alt="import1.png" width="700"/>
 <img src="images/import2.png" alt="import2.png" width="700"/>
