@@ -162,7 +162,6 @@ Here is an example of a pipeline with only a <code>V1-DRAFT</code> version gener
 
 ```
 ---------------------------------
-
 Exporting pipeline 'Files to Snowflake' version '5' with pipeline ID '64d52992-6d78-4ac4-8591-b71ed4d4f769:8030c2e9-1a39-11ec-a5fe-97c8d4369386'into the file '/Users/mark/pipelines-export/Files to Snowflake.zip'
 Pipeline '146-databricks-on-azure' version '1-DRAFT' with pipeline ID '17008a20-444d-45c8-a8bc-5e7f55a8dade:8030c2e9-1a39-11ec-a5fe-97c8d4369386' is a draft pipeline and can't be exported.
 Looking for the most recent published version of the pipeline...
