@@ -196,79 +196,59 @@ A good test to perform at this point is to manually import one or more of the ex
 
 <img src="images/import_3.png" alt="import_3.png" width="700" style="margin-left: 40px;"/>
 
-## Script #3 - delete-old-jobs.py
+## Script #3 - delete-old-pipelines.py
 
-Description:   This script attempts to delete Jobs instances listed in the input file.  Job Instances and Job Template Instances will be deleted, unless there are permission issues, or in cases where Job instances are referenced by Sequences or Topologies. The script makes sure each Job in the input file has <code>INACTIVE</code> status and has not been run since after the <code>last_run_threshold</code>.
+#### Description:   
+This script attempts to delete pipelines from the pipeline IDs in the input file.  
 
-Args:
-- <code>input_file</code> - A JSON list of Job instances to delete.
+### Important Note:
 
-Usage:          <code>$ python3 delete-old-jobs.py <input_file></code>
+Be careful! This script attempts to delete all versions of all pipelines listed in the input file!  This includes pipelines that have only a <code>v1-DRAFT</code> version, and regardless of whether Script #2 exported an archive for the pipeline or not! It is strongly recommended that you test this script on a small input file -- perhaps only 2 or 3 lines -- to confirm it is working correctly in your environment.  Make sure you understand the logic of Script #2's handling of <code>DRAFT</code> versions.
 
-Usage Example:  <code>$ python3 delete-old-jobs.py /Users/mark/old-jobs/old_jobs.json</code>
+<hr/>
+
+
+
+#### Args:
+- <code>input_file</code> - A JSON list of pipelines to delete.
+
+#### Usage:          
+<code>$ python3 delete-old-pipelines.py <input_file></code>
+
+#### Usage Example:  
+
+<code>$ python3 delete-old-pipelines.py /Users/mark/old-pipelines/old_pipelines.json</code>
 
 This script does not write a log, so if you want to capture the results of this script in a file, redirect its output like this:
 
-<code>$ python3 delete-old-jobs.py /Users/mark/old-jobs/old_jobs.json > /Users/mark/deleted-jobs.log</code>
+<code>$ python3 delete-old-pipelines.py /Users/mark/old-pipelines/old_pipelines.json > /Users/mark/deleted-pipelines.log</code>
 
-A good test to perform at this point is to manually edit an <code>old_jobs.json</code> input file so there are only a couple of Jobs listed, run the script, and confirm those Jobs are correctly deleted.
+A good test to perform at this point is to manually edit an <code>old_pipelines.json</code> input file so there are only a couple of pipelines listed, run the script, and confirm those pipelines are correctly deleted.
 
 
-Example Run:
+#### Example Run:
 ```
-	$ python3 python/delete-old-jobs.py /Users/mark/old-jobs/old_jobs.json 
-	---------------------------------
-	input_file: '/Users/mark/old-jobs/old_jobs.json'
-	---------------------------------
-	Connecting to Control Hub
-	---------------------------------
-	Preparing to delete Job 'Weather to Elasticsearch' with Job ID '345b33a1-1ad6-47a0-9b66-10185921d3fc:8030c2e9-1a39-11ec-a5fe-97c8d4369386'
-	- Found Job
-	Error: Job 'Weather to Elasticsearch' has status 'INACTIVE_ERROR'; the Job should have status of 'INACTIVE' to be deleted
-	---------------------------------
-	Preparing to delete Job 'Weather to MongoDB' with Job ID '338b33a1-1ad6-47a0-9b66-6b685921d3fc:8030c2e9-1a39-11ec-a5fe-97c8d4369386'
-	- Found Job
-	- Job has status 'INACTIVE'
-	- Last Job run was before threshold date.
-	Error: Attempt to delete Job failed; JOBRUNNER_251: Cannot delete job 'Weather to MongoDB' as it is part of sequences: '1'
-	---------------------------------
-	Preparing to delete Job 'Weather to Astra' with Job ID '118b33a1-1ad6-47a0-9b66-6b685921d3fc:8030c2e9-1a39-11ec-a5fe-97c8d4369386'
-	- Found Job
-	- Job has status 'INACTIVE'
-	- Job was run at '2025-07-24 18:30:11' which is more recent than the last_run_threshold of '2025-06-30'
-	--> Job will not be deleted.
- 	---------------------------------
-	Preparing to delete Job 'Check API Schema - http://localhost:9001/get/employee' with Job ID '6641429e-dea4-416e-a93a-d4bdc5f98eaf:8030c2e9-1a39-11ec-a5fe-97c8d4369386'
-	- Found Job
-	- Job has status 'INACTIVE'
-	- Last Job run was before threshold date.
-	- Job was deleted.
-	---------------------------------
-	Preparing to delete Job 'Check API Schema - http://localhost:9002/movies' with Job ID '3687eba0-9a76-457c-ad5a-56424cac8181:8030c2e9-1a39-11ec-a5fe-97c8d4369386'
-	- Found Job
-	- Job has status 'INACTIVE'
-	- Last Job run was before threshold date.
-	- Job was deleted.
-	---------------------------------
-	Preparing to delete Job 'Check API Schema - http://localhost:9001/get/employee' with Job ID '4082cfa9-f622-4f83-a1a1-9bacfe10a2a6:8030c2e9-1a39-11ec-a5fe-97c8d4369386'
-	- Found Job
-	- Job has status 'INACTIVE'
-	- Last Job run was before threshold date.
-	- Job was deleted.
-	---------------------------------
-	Preparing to delete Job 'Check Database Table Schema - employee' with Job ID '6b3a84fd-b72f-4ab4-a2a3-10850dd3f88e:8030c2e9-1a39-11ec-a5fe-97c8d4369386'
-	- Found Job
-	- Job has status 'INACTIVE'
-	- Last Job run was before threshold date.
-	- Job was deleted.
-	---------------------------------
-	Preparing to delete Job 'Check Database Table Schema - employee' with Job ID 'bf8aa913-eca9-45f6-8cea-9ce7bff82326:8030c2e9-1a39-11ec-a5fe-97c8d4369386'
-	- Found Job
-	- Job has status 'INACTIVE'
-	- Last Job run was before threshold date.
-	- Job was deleted.
-	---------------------------------
-	Done
+$ python3 ./delete-old-pipelines.py /Users/mark/old-pipelines/old_pipelines.json 
+---------------------------------
+input_file: '/Users/mark/old-pipelines/old_pipelines.json'
+---------------------------------
+Connecting to Control Hub
+---------------------------------
+Preparing to delete pipeline 'AKS Test' with ID '226b2e42-512f-48f7-82de-f5eed8032d53:8030c2e9-1a39-11ec-a5fe-97c8d4369386'
+- Found Pipeline
+- Pipeline was deleted.
+---------------------------------
+Preparing to delete pipeline 'Aggregations-Per-Input-File (CSV Files)' with ID '37d43171-334a-4991-8609-bf538c783c8e:8030c2e9-1a39-11ec-a5fe-97c8d4369386'
+- Found Pipeline
+- Pipeline was deleted.
+---------------------------------
+Preparing to delete pipeline 'BQ Truncate and Load Orchestration' with ID '831bc09a-d9bd-4b22-adca-a8bc1d69fb80:8030c2e9-1a39-11ec-a5fe-97c8d4369386'
+- Found Pipeline
+- Pipeline was deleted.
+---------------------------------
+...
+
+Done
 ```
 
 
