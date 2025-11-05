@@ -163,9 +163,9 @@ with open(input_file, 'r') as f:
                         pipeline_name = pipeline.name.replace("/", "_")
                         export_file_name = export_dir + '/' + pipeline_name + '.zip'
 
-                        print(f"Exporting pipeline \'{pipeline.name}\' version \'{pipeline.version}\' into the file \'{export_file_name}\'")
+                        print(f"Exporting pipeline \'{pipeline.name}\' version \'{pipeline.version}\' with pipeline ID \'{pipeline.pipeline_id}\'into the file \'{export_file_name}\'")
 
-                        data = sch.export_pipelines([pipeline])
+                        data = sch.export_pipelines([pipeline], fragments=True, include_plain_text_credentials=False)
 
                         # Write a zip file for the Job
                         with open(export_file_name, 'wb') as file:
