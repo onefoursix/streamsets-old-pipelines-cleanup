@@ -32,16 +32,6 @@ from pathlib import Path
 from datetime import datetime
 from streamsets.sdk import ControlHub
 
-# Method to convert a datetime string of the form 'yyy-dd-mm' to millis
-def convert_dt_string_to_millis(dt_string):
-    dt = datetime.strptime(dt_string, "%Y-%m-%d")
-    return int(dt.timestamp() * 1000)
-
-# Method to convert millis to a datetime string
-def convert_millis_to_dt_string(millis):
-    dt = datetime.fromtimestamp(millis / 1000)
-    return dt.strftime("%Y-%m-%d %H:%M:%S")
-
 # Method that validates the input_file command line parameter.
 # Returns True if the input_file exists and is readable or False otherwise
 def validate_input_file_parameter(the_input_file):
@@ -79,7 +69,7 @@ def delete_pipeline(pipeline):
     except Exception as ex:
         print(f"Error: Attempt to delete pipeline \'{pipeline_name}\' with ID \'{pipeline_id}\' failed; {ex}")
 
-# Method to handle each line the input file
+# Method to handle each line of the input file
 def handle_line(the_pipeline_info):
 
     print(f"Preparing to delete pipeline \'{the_pipeline_info['pipeline_name']}\' with ID \'{the_pipeline_info['pipeline_id']}\'")
