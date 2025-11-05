@@ -153,23 +153,6 @@ Pipeline '2 - Union' version '5-DRAFT' with pipeline ID '013aba98-7206-4322-80a3
 Looking for the most recent published version of the pipeline...
 Exporting pipeline '2 - Union' version '4' with pipeline ID '013aba98-7206-4322-80a3-674f0ed0fefa:8030c2e9-1a39-11ec-a5fe-97c8d4369386'into the file '/Users/mark/pipelines-export/2 - Union.zip'
 ---------------------------------
-input_file: '/Users/mark/old-pipelines/old_pipelines.json'
----------------------------------
-export_dir: '/Users/mark/pipelines-export'
----------------------------------
-Connecting to Control Hub
----------------------------------
-Exporting Pipelines...
----------------------------------
-Pipeline '146-databricks-on-azure' version '1-DRAFT' with pipeline ID '17008a20-444d-45c8-a8bc-5e7f55a8dade:8030c2e9-1a39-11ec-a5fe-97c8d4369386' is a draft pipeline and can't be exported.
-Looking for the most recent published version of the pipeline...
-No published versions found for this pipeline
-Warning: Pipeline '146-databricks-on-azure' with pipeline ID '17008a20-444d-45c8-a8bc-5e7f55a8dade:8030c2e9-1a39-11ec-a5fe-97c8d4369386' was not exported!
----------------------------------
-Pipeline '2 - Union' version '5-DRAFT' with pipeline ID '013aba98-7206-4322-80a3-674f0ed0fefa:8030c2e9-1a39-11ec-a5fe-97c8d4369386' is a draft pipeline and can't be exported.
-Looking for the most recent published version of the pipeline...
-Exporting pipeline '2 - Union' version '4' with pipeline ID '013aba98-7206-4322-80a3-674f0ed0fefa:8030c2e9-1a39-11ec-a5fe-97c8d4369386'into the file '/Users/mark/pipelines-export/2 - Union.zip'
----------------------------------
 Exporting pipeline 'Excel ETL' version '1' with pipeline ID '39b27983-c1c5-4750-8625-4ce6bdeb5157:8030c2e9-1a39-11ec-a5fe-97c8d4369386'into the file '/Users/mark/pipelines-export/Excel ETL.zip'
 ---------------------------------
 Exporting pipeline 'Excel to Snowflake' version '1' with pipeline ID 'a57161b9-916e-410f-9e8f-e6dc400907ea:8030c2e9-1a39-11ec-a5fe-97c8d4369386'into the file '/Users/mark/pipelines-export/Excel to Snowflake.zip'
