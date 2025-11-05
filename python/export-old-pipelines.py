@@ -168,7 +168,7 @@ with open(input_file, 'r') as f:
 
                         data = sch.export_pipelines([pipeline], fragments=True, include_plain_text_credentials=False)
 
-                        # Write a zip file for the Job
+                        # Write a zip file for the pipeline
                         with open(export_file_name, 'wb') as file:
                             file.write(data)
 
