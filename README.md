@@ -136,7 +136,7 @@ This script does not write a log, so if you want to capture the results of this 
 <code>$ python3 export-old-pipelines.py /Users/mark/old-pipelines/old_pipelines.json /Users/mark/pipelines-export > /Users/mark/pipelines-export.log</code> 
 
 #### Example Run
-Here are snippets of an example run. Note the warnings where for a <code>V1-DRAFT</code> pipeline, no version of the pipeline was exported, and in cases where the most recent version is a <code>DRAFT</code> of <code>V2-DRAFT</code> or higher, the most recent published version was exported:
+Here are snippets of an example run of successful exports for  pipelines that did not have any <code>DRAFT</code> versions:
 
 ```
 $ python3 export-old-pipelines.py /Users/mark/old-pipelines/old_pipelines.json /Users/mark/pipelines-export 

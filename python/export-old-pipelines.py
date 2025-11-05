@@ -12,7 +12,7 @@
 #
 # USAGE:          $ python3 export-old-pipelines.py <input_file> <export_dir>
 #
-# USAGE EXAMPLE:  $ $ python3 export-old-pipelines.py /Users/mark/old-pipelines/old_pipelines.json /Users/mark/pipelines-export
+# USAGE EXAMPLE:  $ python3 export-old-pipelines.py /Users/mark/old-pipelines/old_pipelines.json /Users/mark/pipelines-export
 #
 # PREREQUISITES:
 #
