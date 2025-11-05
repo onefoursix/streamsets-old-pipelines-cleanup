@@ -173,11 +173,14 @@ for pipeline in sch.pipelines:
         if pipeline.last_modified_on < last_modification_date_threshold_millis:
 
             last_modified_date = millis_to_datetime_string(pipeline.last_modified_on)
+            is_draft = pipeline.draft
 
             # Add the pipeline id to the list of old pipelines
             old_pipelines.append({'pipeline_name': pipeline.name,
                                   'pipeline_id': pipeline.pipeline_id,
-                                  'last_modified': last_modified_date})
+                                  'last_modified': last_modified_date,
+                                  'version': pipeline.version,
+                                  'is_draft': is_draft})
 
 print("---------------------------------")
     # Write the old pipelines to the output file in alphabetical order
@@ -185,7 +188,7 @@ print("---------------------------------")
 
 
 if len(old_pipelines) > 0:
-    print('Writing the list of old pipelines to the output file')
+
     old_pipelines_sorted = sorted(old_pipelines, key=lambda x: x['pipeline_name'])
     # Write to JSON file
     with open(output_file, 'w') as output_file:
@@ -193,10 +196,13 @@ if len(old_pipelines) > 0:
             pipeline_name = pipeline['pipeline_name']
             pipeline_id = pipeline['pipeline_id']
             last_modified = pipeline['last_modified']
+            version = pipeline['version']
+            is_draft = pipeline['is_draft']
             line = json.dumps({"pipeline_name": pipeline_name, "pipeline_id": pipeline_id,
-                               "last_modified": last_modified }) + '\n'
+                               "last_modified": last_modified, "version": version, "is_draft": is_draft}) + '\n'
             output_file.write(line)
     print(f'Found {len(old_pipelines)} old pipelines not associated with any Jobs.')
+    print('Writing the list of old pipelines to the output file.')
 else:
     print("No old pipelines not associated with Jobs were found.")
 

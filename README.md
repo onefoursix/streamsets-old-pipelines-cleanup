@@ -65,19 +65,21 @@ Searching for old pipelines not associated with Jobs.
 Please be patient; this may take a while...
 ...
 ---------------------------------
-Writing the list of old pipelines to the output file
-Found 191 old pipelines not associated with any Jobs.
+Found 190 old pipelines not associated with any Jobs.
+Writing the list of old pipelines to the output file.
 ---------------------------------
 Done
+
 
 ```
 Here is a snippet of the data written to the output file <code>old_pipelines.json</code>. Note that the pipelines are sorted in alphabetical order:
 
 ```
-{"pipeline_name": "CSV Files to MongoDB", "pipeline_id": "7874e2db-ea9e-4bdb-b114-908e98f15c9f:8030c2e9-1a39-11ec-a5fe-97c8d4369386", "last_modified": "2023-10-09 15:52:32"}
-{"pipeline_name": "CSV Files to Oracle", "pipeline_id": "45dbbba5-3b59-4f4a-8294-438ab9b7de8d:8030c2e9-1a39-11ec-a5fe-97c8d4369386", "last_modified": "2023-10-09 15:49:35"}
-{"pipeline_name": "Call Python UDF", "pipeline_id": "1fd1594b-5b95-432c-808a-cc67f8456a38:8030c2e9-1a39-11ec-a5fe-97c8d4369386", "last_modified": "2023-09-08 14:31:43"}
-{"pipeline_name": "City Metrics", "pipeline_id": "94ffbcec-affc-43bd-8323-2fa37fd603a7:8030c2e9-1a39-11ec-a5fe-97c8d4369386", "last_modified": "2023-07-20 17:29:56"}
+{"pipeline_name": "Convert_JSON_to_CSV", "pipeline_id": "a8e68710-5bec-4e69-aad3-8d11553d52ca:8030c2e9-1a39-11ec-a5fe-97c8d4369386", "last_modified": "2023-10-07 21:15:14", "version": "6", "is_draft": false}
+{"pipeline_name": "Create Data for Use Case 3", "pipeline_id": "72a2be2d-fb81-48a7-846a-1d1e25bec4ca:8030c2e9-1a39-11ec-a5fe-97c8d4369386", "last_modified": "2023-10-06 15:53:01", "version": "1-DRAFT", "is_draft": true}
+{"pipeline_name": "Create Trips Facts", "pipeline_id": "a86adf84-cd6f-4aa2-949e-cc2cdf5895f0:8030c2e9-1a39-11ec-a5fe-97c8d4369386", "last_modified": "2023-09-27 13:07:03", "version": "18.5-DRAFT", "is_draft": true}
+
+
 ```
 
 ## Script #2 - export-old-pipelines.py

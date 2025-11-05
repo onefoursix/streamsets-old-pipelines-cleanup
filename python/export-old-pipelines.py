@@ -107,7 +107,7 @@ print('Connecting to Control Hub')
 sch = ControlHub(credential_id=CRED_ID, token=CRED_TOKEN)
 
 print("---------------------------------")
-print('Exporting Jobs...')
+print('Exporting Pipelines...')
 print("---------------------------------")
 
 # Process each line of the input_file
@@ -119,7 +119,7 @@ with open(input_file, 'r') as f:
 
             try:
                 # Get the pipeline from Control Hub using its ID
-                query = 'id=="' + pipeline_id + '"'
+                query = 'pipeline_id=="' + pipeline_id + '"'
                 pipelines = sch.pipelines.get_all(search=query)
 
                 # Handle if pipeline is not found
@@ -128,13 +128,31 @@ with open(input_file, 'r') as f:
 
                # Export Pipeline
                 else:
-                    pipeline = pipeline[0]
+                    pipeline = pipelines[0]
 
-                    # replace '/' with '_' in Job name
+                    # If the pipeline is a draft version, get the last published version instead
+                    if pipeline.draft:
+                        print(f"Pipeline \'{obj["pipeline_name"]}\' version \'{pipeline.version}\' with pipeline ID \'{pipeline_id}\' is a draft pipeline and can't be exported.")
+                        print("Looking for the most recent published version of the pipeline...")
+
+                        # See if a version of the pipeline has been published
+                        commits = pipeline.commits
+                        if commits is None or len(commits) == 0:
+                            print("No published versions found for this pipeline")
+                            print(f"Warning: Pipeline \'{obj["pipeline_name"]}\' with pipeline ID \'{pipeline_id}\' was not exported!")
+
+                        else:
+                            # Get the most recent published version
+                            most_recent_commit = max(commits, key=lambda c: c.commit_time)
+                            # Get the most recent commit of the pipeline from Control Hub using its ID
+                            query = 'pipeline_id=="' + pipeline_id + '"'
+                            pipelines = sch.pipelines.get_all(search=query)
+
+                    # replace '/' with '_' in pipeline name
                     pipeline_name = pipeline.name.replace("/", "_")
                     export_file_name = export_dir + '/' + pipeline_name + '.zip'
 
-                    print(f"Exporting pipeline \'{pipeline.name}\' into the file \'{export_file_name}\'")
+                    print(f"Exporting pipeline \'{pipeline.name}\' version \'{pipeline.version}\' into the file \'{export_file_name}\'")
 
                     data = sch.export_pipelines([pipeline])
 
