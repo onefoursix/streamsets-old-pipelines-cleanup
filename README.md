@@ -114,7 +114,7 @@ See the Example Run's output messages below for examples of handling these scena
 The script only exports the latest published version of any pipeline (assuming at least one version was published).
 
 This script could be modified to export every version of every pipeline but that struck me as excessive.  Once again, let me know if you want to change the default behavior of this script.
-
+<hr/>
 ### Important Note #3:
 
 This script sets <code>include_plain_text_credentials</code> to <code>False</code> in the <code>sch.export_pipelines</code>, which means that if you have hard-coded credentials within your pipelines, they will not be exported! 
