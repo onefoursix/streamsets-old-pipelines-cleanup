@@ -1,6 +1,6 @@
 # streamsets-old-pipelines-cleanup
 
-This project provides three utility scripts that use the [IBM StreamSets SDK for Python](https://support-streamsets-com.s3.us-west-2.amazonaws.com/streamsets-docs/platform-sdk/latest/index.html) to clean up old pipelines from [IBM StreamSets](https://www.ibm.com/products/streamsets).  Pipelines are considered old if no version of the pipeline is associated with a Job and the last modification to the pipeline was before a user-specified "last modified date threshold". 
+This project provides three utility scripts that use the [IBM StreamSets SDK for Python](https://support-streamsets-com.s3.us-west-2.amazonaws.com/streamsets-docs/platform-sdk/latest/index.html) to clean up old pipelines from [IBM StreamSets](https://www.ibm.com/products/streamsets).  Pipelines are considered old if no version of the pipeline is associated with a Job and the last modification to the pipeline was before a user-specified "last modified date threshold".  This project is a companion to [this project](https://github.com/onefoursix/streamsets-old-jobs-cleanup) that deletes old Jobs
 
 The scripts perform the following actions and are intended to be run in the following order to minimize risk when deleting pipelines:
 
